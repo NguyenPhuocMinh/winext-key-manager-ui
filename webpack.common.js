@@ -9,7 +9,8 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -44,7 +45,14 @@ module.exports = {
     extensions: ['*', '.js', '.jsx', '.css'],
     alias: {
       // for jest test
-      config$: 'jest.config.js'
+      config$: 'jest.config.js',
+      '@components': path.resolve(__dirname, './src/components'),
+      '@services': path.resolve(__dirname, './src/services'),
+      '@validators': path.resolve(__dirname, './src/validators'),
+      '@registerIcons': path.resolve(__dirname, './src/registerIcons'),
+      '@constants': path.resolve(__dirname, './src/constants'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
+      '@customActions': path.resolve(__dirname, './src/customStore/customActions'),
     },
     modules: [
       'node_modules',
@@ -115,14 +123,14 @@ module.exports = {
     // This option allows you to whitelist services that are allowed to access the dev server.
     allowedHosts: 'all',
     // Specify a port number to listen for requests on:
-    port: 5000,
+    port: 3500,
     // Enable webpack's Hot Module Replacement feature
     host: 'localhost',
     // for reload page not found 404 responses
     historyApiFallback: true,
-    // With a backend on localhost:7979, you can use this to enable proxying:
+    // With a backend on localhost:7878, you can use this to enable proxying:
     proxy: {
-      '/admin': 'http://localhost:7979'
+      '/console': 'http://localhost:7878'
     },
     static: {
       directory: path.join(__dirname, 'public')
@@ -139,5 +147,5 @@ module.exports = {
       // Tells dev-server the number of times it should try to reconnect the client. When true it will try to reconnect unlimited times.
       reconnect: 3
     }
-  },
+  }
 };

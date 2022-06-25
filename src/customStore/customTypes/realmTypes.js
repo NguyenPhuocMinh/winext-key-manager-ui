@@ -1,0 +1,5 @@
+export const GET_ALL_REALM = 'GET_ALL_REALM';
+export const CREATE_REALM = 'CREATE_REALM';
+export const GET_REALM_ID = 'GET_REALM_ID';
+export const UPDATE_REALM = 'UPDATE_REALM';
+export const RESET_REALM_RECORD = 'RESET_REALM_RECORD';

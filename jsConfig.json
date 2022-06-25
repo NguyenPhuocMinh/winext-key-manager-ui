@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@services/*": ["src/services/*"],
+      "@validators/*": ["src/validators/*"],
+      "@registerIcons": ["src/registerIcons"],
+      "@constants": ["src/constants"],
+      "@helpers/*": ["src/helpers/*"],
+      "@customActions/*": ["./src/customStore/customActions/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

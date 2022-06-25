@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { BootStrapStory, BootStrapStoryResource } from 'story-bootstrap';
+// provider
+import authProvider from './authProvider/authProvider';
+import i18nProvider from './i18nProvider';
+import customReducers from './customStore/customReducers';
+import resources from './resources';
+import { Dashboard, LoginPage } from './components';
+import { Layout } from './layout';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BootStrapStory
+      title="title" // see translate title
+      authProvider={authProvider}
+      customReducers={customReducers}
+      i18nProvider={i18nProvider}
+      dashboard={Dashboard}
+      loginPage={LoginPage}
+      layout={Layout}
+    >
+      {resources.map((resource) => (
+        <BootStrapStoryResource
+          key={resource.name}
+          name={resource.name}
+          component={resource.component}
+        />
+      ))}
+    </BootStrapStory>
   );
-}
+};
 
 export default App;

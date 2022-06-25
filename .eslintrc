@@ -3,6 +3,19 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@components", "./src/components"],
+          ["@services", "./src/services"],
+          ["@validators", "./src/validators"],
+          ["@registerIcons", "./src/registerIcons"],
+          ["@constants", "./src/constants"],
+          ["@helpers", "./src/helpers"],
+          ["@customActions", "./src/customStore/customActions"]
+        ]
+      }
     }
   },
   "env": {
@@ -110,6 +123,9 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-wrap-multilines": "off",
     "react/jsx-fragments": "off",
+    "react/jsx-boolean-value": "off",
+    "react/no-unstable-nested-components": "off",
+    "react-hooks/exhaustive-deps": "off",
     // prettier
     "prettier/prettier": [
       "warn",
@@ -203,8 +219,8 @@
     "prefer-destructuring": [
       "error",
       {
-        "array": true,
-        "object": false
+        "array": false,
+        "object": true
       },
       {
         "enforceForRenamedProperties": false
@@ -217,6 +233,8 @@
     "no-plusplus": "off",
     "no-restricted-properties": "off",
     "prefer-template": "off",
-    "prefer-exponentiation-operator": "off"
+    "prefer-exponentiation-operator": "off",
+    "no-underscore-dangle": "off",
+    "no-nested-ternary": "off"
   }
 }
