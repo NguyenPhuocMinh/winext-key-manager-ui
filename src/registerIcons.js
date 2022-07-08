@@ -28,7 +28,12 @@ import {
   Search,
   Delete,
   Edit,
-  Close
+  Close,
+  AccountBalance,
+  SyncLock,
+  Visibility,
+  VisibilityOff,
+  ContactSupport
 } from '@mui/icons-material';
 
 const registerIcons = {
@@ -61,7 +66,12 @@ const registerIcons = {
   Search: () => <Search />,
   Delete: () => <Delete />,
   Edit: () => <Edit />,
-  Close: () => <Close />
+  Close: () => <Close />,
+  AccountBalance: () => <AccountBalance />,
+  SyncLock: () => <SyncLock />,
+  Visibility: () => <Visibility />,
+  VisibilityOff: () => <VisibilityOff />,
+  ContactSupport: () => <ContactSupport />
 };
 
 export default registerIcons;

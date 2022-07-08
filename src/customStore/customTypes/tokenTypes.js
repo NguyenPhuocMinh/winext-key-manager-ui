@@ -1,0 +1,2 @@
+export const SAVE_TOKEN_BY_REALM = 'SAVE_TOKEN_BY_REALM';
+export const GET_TOKEN_BY_REALM = 'GET_TOKEN_BY_REALM';

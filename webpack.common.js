@@ -52,7 +52,11 @@ module.exports = {
       '@registerIcons': path.resolve(__dirname, './src/registerIcons'),
       '@constants': path.resolve(__dirname, './src/constants'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
-      '@customActions': path.resolve(__dirname, './src/customStore/customActions'),
+      '@customActions': path.resolve(
+        __dirname,
+        './src/customStore/customActions'
+      ),
+      '@i18nProvider': path.resolve(__dirname, './src/i18nProvider')
     },
     modules: [
       'node_modules',

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useTranslate, NotificationBootStrap } from 'story-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,6 +12,7 @@ import {
   Typography
 } from '@mui/material';
 import { getRealmByIdAction } from '@customActions/index';
+import { TabPanelCommon } from '@components/Common';
 import { useParams } from 'react-router-dom';
 import { get } from 'lodash';
 import { tabs } from './RealmUtils';
@@ -21,28 +21,8 @@ import GeneralTab from './RealmTabs/GeneralTab';
 import KeyTab from './RealmTabs/KeyTab';
 import EmailTab from './RealmTabs/EmailTab';
 import TokenTab from './RealmTabs/TokenTab';
-
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-};
-
-TabPanel.propTypes = {
-  children: PropTypes.node.isRequired,
-  index: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired
-};
+import UsersInRealmTab from './RealmTabs/UsersInRealmTab';
+import GroupsInRealmTab from './RealmTabs/GroupsInRealmTab';
 
 const RealmEdit = (props) => {
   const params = useParams();
@@ -61,7 +41,7 @@ const RealmEdit = (props) => {
     dispatch(getRealmByIdAction(realmID));
   }, [dispatch, realmID]);
 
-  const _ = useSelector((state) => {
+  const { record } = useSelector((state) => {
     return {
       record: get(state, 'realm.record', {})
     };
@@ -71,7 +51,12 @@ const RealmEdit = (props) => {
     <Box sx={{ minWidth: 400 }}>
       <Card>
         <CardHeader
-          sx={{ background: (theme) => theme.palette.primary.main }}
+          sx={{
+            background: (theme) => theme.palette.primary.main,
+            '& .MuiTypography-root': {
+              color: (theme) => theme.palette.secondary.contrastText
+            }
+          }}
           subheader={
             <Box
               display="flex"
@@ -79,7 +64,7 @@ const RealmEdit = (props) => {
               alignItems="center"
             >
               <Typography>
-                {translate('resources.configures.realms.edit.title')}
+                {translate('resources.configures.realms.title.edit')}
               </Typography>
             </Box>
           }
@@ -95,7 +80,7 @@ const RealmEdit = (props) => {
                       textTransform: 'capitalize'
                     }}
                     label={translate(
-                      `resources.configures.realms.edit.tabs.${tab.label}`
+                      `resources.configures.realms.tabs.${tab.label}`
                     )}
                     value={tab.label}
                     key={tab.id}
@@ -106,17 +91,21 @@ const RealmEdit = (props) => {
           </Box>
           {tabs.map((tab) => {
             return (
-              <TabPanel value={tabName} index={tab.label} key={tab.id}>
+              <TabPanelCommon value={tabName} index={tab.label} key={tab.id}>
                 {tabName === tabs[0].label ? (
                   <GeneralTab {...props} />
                 ) : tabName === tabs[1].label ? (
-                  <KeyTab {...props} />
+                  <KeyTab {...props} realmName={record?.name ?? ''} />
                 ) : tabName === tabs[2].label ? (
-                  <EmailTab {...props} />
+                  <EmailTab {...props} realmName={record?.name ?? ''} />
                 ) : tabName === tabs[3].label ? (
-                  <TokenTab {...props} />
+                  <TokenTab {...props} realmName={record?.name ?? ''} />
+                ) : tabName === tabs[4].label ? (
+                  <UsersInRealmTab {...props} realmName={record?.name ?? ''} />
+                ) : tabName === tabs[5].label ? (
+                  <GroupsInRealmTab {...props} realmName={record?.name ?? ''} />
                 ) : null}
-              </TabPanel>
+              </TabPanelCommon>
             );
           })}
         </CardContent>

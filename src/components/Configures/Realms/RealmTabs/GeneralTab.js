@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetRealmRecord, updateRealmByIdAction } from '@customActions/index';
 import { Box, Card, CardContent, CardActions, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { ContactSupportCommon } from '@components/Common';
 import { validateCreateRealm } from '@validators/index';
 import { get } from 'lodash';
 
@@ -32,7 +33,13 @@ const GeneralTab = (props) => {
   });
 
   const handleUpdate = (realmID, values) => {
-    dispatch(updateRealmByIdAction(realmID, { titleName: values.titleName }));
+    dispatch(
+      updateRealmByIdAction(realmID, {
+        titleName: values.titleName,
+        frontEndURL: values.frontEndURL,
+        activated: values.activated
+      })
+    );
   };
 
   const handleCancel = useCallback(() => {
@@ -46,6 +53,7 @@ const GeneralTab = (props) => {
     return {
       name: record?.name ?? '',
       titleName: record?.titleName ?? '',
+      frontEndURL: record?.frontEndURL ?? '',
       activated: record?.activated ?? false
     };
   }, [record]);
@@ -69,8 +77,8 @@ const GeneralTab = (props) => {
             }}
           >
             <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.name"
-              required
+              label="resources.configures.realms.fields.name"
+              disabled
               id="name"
               source="name"
               className={classes.input}
@@ -85,7 +93,7 @@ const GeneralTab = (props) => {
             }}
           >
             <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.titleName"
+              label="resources.configures.realms.fields.titleName"
               id="titleName"
               source="titleName"
               className={classes.input}
@@ -95,15 +103,33 @@ const GeneralTab = (props) => {
           <Box
             sx={{
               marginTop: '1em',
-              display: 'flex'
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <TextInputBootStrap
+              label="resources.configures.realms.fields.frontEndURL"
+              id="frontEndURL"
+              source="frontEndURL"
+              className={classes.input}
+              {...formProps}
+            />
+            <ContactSupportCommon title="resources.configures.realms.fields.tooltip.frontEndURL" />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
             <SwitchInputBootStrap
               id="activated"
               source="activated"
-              label="resources.configures.realms.create.fields.activated"
+              label="resources.configures.realms.fields.activated"
               {...formProps}
             />
+            <ContactSupportCommon title="resources.configures.realms.fields.tooltip.activated" />
           </Box>
         </CardContent>
         <CardActions>
@@ -121,7 +147,7 @@ const GeneralTab = (props) => {
             type="submit"
             disabled={!formProps.isValid || !formProps.dirty}
           >
-            {translate('resources.configures.realms.create.button_save')}
+            {translate('common.button.save')}
           </Button>
           <Button
             sx={{
@@ -136,7 +162,7 @@ const GeneralTab = (props) => {
             variant="outlined"
             onClick={handleCancel}
           >
-            {translate('resources.configures.realms.create.button_cancel')}
+            {translate('common.button.cancel')}
           </Button>
         </CardActions>
       </Card>

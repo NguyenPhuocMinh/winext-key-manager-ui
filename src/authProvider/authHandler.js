@@ -72,7 +72,7 @@ export const prepareResponse = (data = {}) => {
   localStorage.setItem('emailUser', emailUser);
   localStorage.setItem('fullName', fullName);
   localStorage.setItem('photoURL', photoURL);
-  localStorage.setItem('webConfigs', webConfigs);
+  localStorage.setItem('webConfigs', JSON.stringify(webConfigs));
 };
 
 export const getProfile = () => {

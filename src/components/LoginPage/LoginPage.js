@@ -265,7 +265,7 @@ const FormLogin = (formProps, options = {}) => {
                       thickness={2}
                     />
                   )}
-                  {translate('admin.actions.login')}
+                  {translate('common.button.login')}
                 </Button>
               </CardActions>
             </Card>

@@ -5,10 +5,10 @@ import Dashboard from './Dashboard/Dashboard';
 
 export * from './Common';
 
-export * from './Customers';
 export * from './Configures/Realms';
-export * from './Configures/Roles';
 export * from './Manages/Groups';
 export * from './Manages/Users';
+export * from './Manages/Roles';
+export * from './Manages/Permissions';
 
 export { LoginPage, Dashboard };

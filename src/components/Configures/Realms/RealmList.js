@@ -15,16 +15,21 @@ import {
   deleteRealmByIdAction,
   showPopup
 } from '@customActions/index';
-import { ButtonCreate, NoRowsOverlay, ShowPopup } from '@components/Common';
+import {
+  ButtonCreateCommon,
+  NoRowsOverlayCommon,
+  ShowPopupCommon
+} from '@components/Common';
 import { Paper, Box } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import registerIcons from '@registerIcons';
+import constants from '@constants';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
-import { other } from './RealmUtils';
 import {
   GRID_EN_LOCALE_TEXT,
   GRID_VN_LOCALE_TEXT
-} from '../../../i18nProvider/localeTexts';
+} from '@i18nProvider/localeTexts';
+import { other } from './RealmUtils';
 
 const useStyles = makeStyles((_) => ({
   input: {
@@ -34,11 +39,11 @@ const useStyles = makeStyles((_) => ({
     '& .MuiIconButton-root': {
       border: 'none !important'
     }
+  },
+  search: {
+    width: 300
   }
 }));
-
-const SORT_DEFAULT = 'createdAt';
-const SORT_ORDER = 'desc';
 
 const RealmList = (props) => {
   const { navigate } = props;
@@ -48,8 +53,8 @@ const RealmList = (props) => {
   const [pageSize, setPageSize] = useState(5);
   const [sortModel, setSortModel] = useState([
     {
-      field: SORT_DEFAULT,
-      sort: SORT_ORDER
+      field: constants.SORT_DEFAULT,
+      sort: constants.SORT_ORDER
     }
   ]);
   const [sort, setSort] = useState(sortModel[0]?.field);
@@ -70,8 +75,13 @@ const RealmList = (props) => {
   const handleOnSortModelChange = useCallback((newSortModel) => {
     setSortModel(newSortModel);
     const _newSortModel = newSortModel[0];
-    setSort(!isEmpty(_newSortModel) ? _newSortModel.field : SORT_DEFAULT);
-    setOrder(!isEmpty(_newSortModel) ? _newSortModel.sort : SORT_ORDER);
+
+    setSort(
+      !isEmpty(_newSortModel) ? _newSortModel.field : constants.SORT_DEFAULT
+    );
+    setOrder(
+      !isEmpty(_newSortModel) ? _newSortModel.sort : constants.SORT_ORDER
+    );
   }, []);
 
   const dispatch = useDispatch();
@@ -121,8 +131,8 @@ const RealmList = (props) => {
       dispatch(
         showPopup({
           open: true,
-          title: 'resources.configures.realms.list.popup.title',
-          content: 'resources.configures.realms.list.popup.content',
+          title: 'resources.configures.realms.popup.title',
+          content: 'resources.configures.realms.popup.content',
           onSubmit: () => dispatch(deleteRealmByIdAction(id, query)),
           options: {
             realmName: name
@@ -137,16 +147,14 @@ const RealmList = (props) => {
     return [
       {
         field: 'name',
-        headerName: translate('resources.configures.realms.list.fields.name'),
+        headerName: translate('resources.configures.realms.fields.name'),
         flex: 0.5,
         resizable: false,
         filterable: false
       },
       {
         field: 'titleName',
-        headerName: translate(
-          'resources.configures.realms.list.fields.titleName'
-        ),
+        headerName: translate('resources.configures.realms.fields.titleName'),
         flex: 1,
         resizable: false,
         filterable: false,
@@ -155,9 +163,7 @@ const RealmList = (props) => {
       },
       {
         field: 'activated',
-        headerName: translate(
-          'resources.configures.realms.list.fields.activated'
-        ),
+        headerName: translate('resources.configures.realms.fields.activated'),
         type: 'boolean',
         flex: 0.5,
         sortable: false,
@@ -167,9 +173,7 @@ const RealmList = (props) => {
       },
       {
         field: 'createdAt',
-        headerName: translate(
-          'resources.configures.realms.list.fields.createdAt'
-        ),
+        headerName: translate('resources.configures.realms.fields.createdAt'),
         type: 'dateTime',
         flex: 0.5,
         resizable: false,
@@ -180,6 +184,7 @@ const RealmList = (props) => {
       },
       {
         field: 'actions',
+        headerName: translate('actions.title'),
         type: 'actions',
         flex: 0.3,
         getActions: (params) => {
@@ -227,8 +232,8 @@ const RealmList = (props) => {
           id="search"
           source="search"
           size="small"
-          placeholder="resources.configures.realms.list.search.name"
-          className={classes.input}
+          placeholder="resources.configures.realms.search"
+          className={classes.search}
           {...formProps}
         />
         <Box
@@ -242,8 +247,8 @@ const RealmList = (props) => {
           }}
         >
           <Box width="auto" minWidth={50}>
-            <ButtonCreate
-              label="resources.configures.realms.list.button_create"
+            <ButtonCreateCommon
+              label="common.button.create"
               redirect="/realm-create"
             />
           </Box>
@@ -271,7 +276,7 @@ const RealmList = (props) => {
             sortingMode="server"
             disableColumnMenu
             components={{
-              NoRowsOverlay
+              NoRowsOverlay: NoRowsOverlayCommon
             }}
             classes={{
               root: classes.dataGridRoot
@@ -280,7 +285,7 @@ const RealmList = (props) => {
           />
         </Box>
       </Paper>
-      <ShowPopup />
+      <ShowPopupCommon />
       <NotificationBootStrap />
     </Box>
   );

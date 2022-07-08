@@ -18,7 +18,8 @@ const authProvider = {
         userName,
         password
       });
-      const data = !isEmpty(response) && get(response, 'data.data.result', {});
+
+      const data = !isEmpty(response) && get(response, 'data.result', {});
 
       prepareResponse(data);
       refreshTokenHandler();
@@ -30,7 +31,7 @@ const authProvider = {
   },
   logout: () => {
     removeLogin();
-    return Promise.resolve();
+    return Promise.resolve('Logout success!!!!');
   },
   checkError: (params) => {
     const { status } = params;

@@ -1,38 +1,60 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
-  TextInputBootStrap,
-  SwitchInputBootStrap,
+  SelectInputBootStrap,
+  NumberInputBootStrap,
   useTranslate,
   useFormik
 } from 'story-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import { resetRealmRecord, updateRealmByIdAction } from '@customActions/index';
-import { Box, Card, CardContent, CardActions, Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { validateCreateRealm } from '@validators/index';
 import { get } from 'lodash';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  resetRealmRecord,
+  saveTokenByRealmAction,
+  getTokenByRealmAction
+} from '@customActions/index';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  CircularProgress
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { ContactSupportCommon } from '@components/Common';
+import constants from '@constants';
 
 const useStyles = makeStyles({
   input: {
-    width: 350
+    width: 500
   }
 });
 
 const TokenTab = (props) => {
-  const { navigate } = props;
+  const { navigate, realmName } = props;
 
   const classes = useStyles();
   const { translate } = useTranslate();
   const dispatch = useDispatch();
 
-  const { record } = useSelector((state) => {
+  useEffect(() => {
+    dispatch(getTokenByRealmAction(realmName));
+  }, [dispatch, realmName]);
+
+  const { record, loading } = useSelector((state) => {
     return {
-      record: get(state, 'realm.record', {})
+      record: get(state, 'token.record', {}),
+      loading: get(state, 'token.loading', false)
     };
   });
 
-  const handleUpdate = (realmID, values) => {
-    dispatch(updateRealmByIdAction(realmID, { titleName: values.titleName }));
+  const handleUpdate = (realm, values) => {
+    dispatch(
+      saveTokenByRealmAction(realm, {
+        signatureAlgorithm: values.signatureAlgorithm,
+        expired: values.expired
+      })
+    );
   };
 
   const handleCancel = useCallback(() => {
@@ -44,17 +66,16 @@ const TokenTab = (props) => {
 
   const initialValues = useMemo(() => {
     return {
-      name: record?.name ?? '',
-      titleName: record?.titleName ?? '',
-      activated: record?.activated ?? false
+      signatureAlgorithm:
+        record?.signatureAlgorithm ?? constants.ALGORITHM_DEFAULT,
+      expired: record?.expired ?? 0
     };
   }, [record]);
 
   const formProps = useFormik({
     enableReinitialize: true, // for render data init when edit
     initialValues,
-    validationSchema: validateCreateRealm(translate),
-    onSubmit: (values) => handleUpdate(record.id, values)
+    onSubmit: (values) => handleUpdate(realmName, values)
   });
 
   return (
@@ -65,45 +86,36 @@ const TokenTab = (props) => {
             sx={{
               marginTop: '1em',
               display: 'flex',
-              justifyContent: 'flex-start'
+              alignItems: 'center'
             }}
           >
-            <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.name"
-              required
-              id="name"
-              source="name"
+            <SelectInputBootStrap
+              label="resources.configures.realms.fields.tokens.signatureAlgorithm"
+              id="signatureAlgorithm"
+              source="signatureAlgorithm"
+              choices={
+                JSON.parse(localStorage.getItem('webConfigs')).algorithms
+              }
               className={classes.input}
               {...formProps}
             />
+            <ContactSupportCommon title="resources.configures.realms.fields.tokens.tooltip.signatureAlgorithm" />
           </Box>
           <Box
             sx={{
               marginTop: '1em',
               display: 'flex',
-              justifyContent: 'flex-start'
+              alignItems: 'center'
             }}
           >
-            <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.titleName"
-              id="titleName"
-              source="titleName"
+            <NumberInputBootStrap
+              label="resources.configures.realms.fields.tokens.expired"
+              id="expired"
+              source="expired"
               className={classes.input}
               {...formProps}
             />
-          </Box>
-          <Box
-            sx={{
-              marginTop: '1em',
-              display: 'flex'
-            }}
-          >
-            <SwitchInputBootStrap
-              id="activated"
-              source="activated"
-              label="resources.configures.realms.create.fields.activated"
-              {...formProps}
-            />
+            <ContactSupportCommon title="resources.configures.realms.fields.tokens.tooltip.signatureAlgorithm" />
           </Box>
         </CardContent>
         <CardActions>
@@ -121,7 +133,15 @@ const TokenTab = (props) => {
             type="submit"
             disabled={!formProps.isValid || !formProps.dirty}
           >
-            {translate('resources.configures.realms.create.button_save')}
+            {loading && (
+              <CircularProgress
+                sx={{ marginRight: '5px' }}
+                color="primary"
+                size={20}
+                thickness={2}
+              />
+            )}
+            {translate('common.button.save')}
           </Button>
           <Button
             sx={{
@@ -136,7 +156,7 @@ const TokenTab = (props) => {
             variant="outlined"
             onClick={handleCancel}
           >
-            {translate('resources.configures.realms.create.button_cancel')}
+            {translate('common.button.cancel')}
           </Button>
         </CardActions>
       </Card>

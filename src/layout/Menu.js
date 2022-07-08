@@ -31,17 +31,6 @@ const Menu = ({ hasDashboard }) => {
           registerIcons={registerIcons}
           leftIcon="Waves"
         />
-        <MenuItemBootStrap
-          to={{
-            pathname: '/role-list',
-            state: { _scrollToTop: true }
-          }}
-          primaryText={translate('resources.configures.roles.name', {
-            smart_count: 2
-          })}
-          registerIcons={registerIcons}
-          leftIcon="PlaylistRemove"
-        />
       </SubMenuBootStrap>
       <NavDivider />
       <SubMenuBootStrap
@@ -73,14 +62,25 @@ const Menu = ({ hasDashboard }) => {
         />
         <MenuItemBootStrap
           to={{
-            pathname: '/sessions',
+            pathname: '/role-list',
             state: { _scrollToTop: true }
           }}
-          primaryText={translate('resources.manages.sessions.name', {
+          primaryText={translate('resources.manages.roles.name', {
             smart_count: 2
           })}
           registerIcons={registerIcons}
-          leftIcon="ManageHistory"
+          leftIcon="PlaylistRemove"
+        />
+        <MenuItemBootStrap
+          to={{
+            pathname: '/permission-list',
+            state: { _scrollToTop: true }
+          }}
+          primaryText={translate('resources.manages.permissions.name', {
+            smart_count: 2
+          })}
+          registerIcons={registerIcons}
+          leftIcon="SyncLock"
         />
       </SubMenuBootStrap>
       <NavDivider />

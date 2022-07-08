@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   TextInputBootStrap,
   SwitchInputBootStrap,
@@ -6,33 +6,49 @@ import {
   useFormik
 } from 'story-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetRealmRecord, updateRealmByIdAction } from '@customActions/index';
-import { Box, Card, CardContent, CardActions, Button } from '@mui/material';
+import {
+  saveEmailByRealmAction,
+  getEmailByRealmAction,
+  resetRealmRecord
+} from '@customActions/index';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardActions,
+  Button,
+  CircularProgress
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { validateCreateRealm } from '@validators/index';
+import { validateEmail } from '@validators/index';
 import { get } from 'lodash';
 
 const useStyles = makeStyles({
   input: {
-    width: 350
+    width: 500
   }
 });
 
 const EmailTab = (props) => {
-  const { navigate } = props;
+  const { navigate, realmName } = props;
 
   const classes = useStyles();
   const { translate } = useTranslate();
   const dispatch = useDispatch();
 
-  const { record } = useSelector((state) => {
+  useEffect(() => {
+    dispatch(getEmailByRealmAction(realmName));
+  }, [dispatch, realmName]);
+
+  const { record, loading } = useSelector((state) => {
     return {
-      record: get(state, 'realm.record', {})
+      record: get(state, 'email.record', {}),
+      loading: get(state, 'email.loading', {})
     };
   });
 
-  const handleUpdate = (realmID, values) => {
-    dispatch(updateRealmByIdAction(realmID, { titleName: values.titleName }));
+  const handleUpdate = (realm, values) => {
+    dispatch(saveEmailByRealmAction(realm, { titleName: values.titleName }));
   };
 
   const handleCancel = useCallback(() => {
@@ -44,17 +60,23 @@ const EmailTab = (props) => {
 
   const initialValues = useMemo(() => {
     return {
-      name: record?.name ?? '',
-      titleName: record?.titleName ?? '',
-      activated: record?.activated ?? false
+      host: record?.host ?? '',
+      port: record?.port ?? '',
+      fromDisplayName: record?.fromDisplayName ?? '',
+      from: record?.from ?? '',
+      replyToDisplayName: record?.replyToDisplayName ?? '',
+      replyTo: record?.replyTo ?? '',
+      enableSSL: record?.enableSSL ?? false,
+      enableStartSSL: record?.enableStartSSL ?? false,
+      enableAuthorization: record?.enableAuthorization ?? false
     };
   }, [record]);
 
   const formProps = useFormik({
     enableReinitialize: true, // for render data init when edit
     initialValues,
-    validationSchema: validateCreateRealm(translate),
-    onSubmit: (values) => handleUpdate(record.id, values)
+    validationSchema: validateEmail(translate),
+    onSubmit: (values) => handleUpdate(realmName, values)
   });
 
   return (
@@ -65,14 +87,43 @@ const EmailTab = (props) => {
             sx={{
               marginTop: '1em',
               display: 'flex',
-              justifyContent: 'flex-start'
+              justifyContent: 'space-between'
             }}
           >
             <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.name"
+              label="resources.configures.realms.fields.emails.host"
               required
-              id="name"
-              source="name"
+              id="host"
+              source="host"
+              className={classes.input}
+              {...formProps}
+            />
+            <Button
+              sx={{
+                width: 'auto',
+                minWidth: 150,
+                borderRadius: 12,
+                textTransform: 'capitalize',
+                ':hover': {
+                  background: 'none'
+                }
+              }}
+              variant="contained"
+              disabled={!formProps.isValid || !formProps.dirty}
+            >
+              {translate('common.button.testConnection')}
+            </Button>
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <TextInputBootStrap
+              label="resources.configures.realms.fields.emails.port"
+              id="port"
+              source="port"
               className={classes.input}
               {...formProps}
             />
@@ -80,14 +131,56 @@ const EmailTab = (props) => {
           <Box
             sx={{
               marginTop: '1em',
-              display: 'flex',
-              justifyContent: 'flex-start'
+              display: 'flex'
             }}
           >
             <TextInputBootStrap
-              label="resources.configures.realms.edit.fields.titleName"
-              id="titleName"
-              source="titleName"
+              label="resources.configures.realms.fields.emails.fromDisplayName"
+              id="fromDisplayName"
+              source="fromDisplayName"
+              className={classes.input}
+              {...formProps}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <TextInputBootStrap
+              label="resources.configures.realms.fields.emails.from"
+              required
+              id="from"
+              source="from"
+              className={classes.input}
+              {...formProps}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <TextInputBootStrap
+              label="resources.configures.realms.fields.emails.replyToDisplayName"
+              id="replyToDisplayName"
+              source="replyToDisplayName"
+              className={classes.input}
+              {...formProps}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <TextInputBootStrap
+              label="resources.configures.realms.fields.emails.replyTo"
+              id="replyTo"
+              source="replyTo"
               className={classes.input}
               {...formProps}
             />
@@ -99,9 +192,35 @@ const EmailTab = (props) => {
             }}
           >
             <SwitchInputBootStrap
-              id="activated"
-              source="activated"
-              label="resources.configures.realms.create.fields.activated"
+              label="resources.configures.realms.fields.emails.enableSSL"
+              id="enableSSL"
+              source="enableSSL"
+              {...formProps}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <SwitchInputBootStrap
+              label="resources.configures.realms.fields.emails.enableStartTLS"
+              id="enableStartTLS"
+              source="enableStartTLS"
+              {...formProps}
+            />
+          </Box>
+          <Box
+            sx={{
+              marginTop: '1em',
+              display: 'flex'
+            }}
+          >
+            <SwitchInputBootStrap
+              label="resources.configures.realms.fields.emails.enableAuthentication"
+              id="enableAuthentication"
+              source="enableAuthentication"
               {...formProps}
             />
           </Box>
@@ -121,7 +240,15 @@ const EmailTab = (props) => {
             type="submit"
             disabled={!formProps.isValid || !formProps.dirty}
           >
-            {translate('resources.configures.realms.create.button_save')}
+            {loading && (
+              <CircularProgress
+                sx={{ marginRight: '5px' }}
+                color="primary"
+                size={20}
+                thickness={2}
+              />
+            )}
+            {translate('common.button.save')}
           </Button>
           <Button
             sx={{
@@ -136,7 +263,7 @@ const EmailTab = (props) => {
             variant="outlined"
             onClick={handleCancel}
           >
-            {translate('resources.configures.realms.create.button_cancel')}
+            {translate('common.button.cancel')}
           </Button>
         </CardActions>
       </Card>

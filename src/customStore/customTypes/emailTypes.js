@@ -1,0 +1,2 @@
+export const SAVE_EMAIL_BY_REALM = 'SAVE_EMAIL_BY_REALM';
+export const GET_EMAIL_BY_REALM = 'GET_EMAIL_BY_REALM';

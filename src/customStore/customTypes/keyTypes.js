@@ -1,0 +1,2 @@
+export const SAVE_KEY_BY_REALM = 'SAVE_KEY_BY_REALM';
+export const GET_KEY_BY_REALM = 'GET_KEY_BY_REALM';

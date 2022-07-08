@@ -13,7 +13,8 @@
           ["@registerIcons", "./src/registerIcons"],
           ["@constants", "./src/constants"],
           ["@helpers", "./src/helpers"],
-          ["@customActions", "./src/customStore/customActions"]
+          ["@customActions", "./src/customStore/customActions"],
+          ["@i18nProvider", "./src/i18nProvider"]
         ]
       }
     }

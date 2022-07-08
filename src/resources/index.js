@@ -4,10 +4,16 @@ import {
   RealmEdit,
   RoleList,
   RoleCreate,
+  RoleEdit,
   GroupList,
   GroupCreate,
+  GroupEdit,
   UserList,
-  UserCreate
+  UserCreate,
+  UserEdit,
+  PermissionList,
+  PermissionCreate,
+  PermissionEdit
 } from '@components/index';
 
 const resources = [
@@ -32,6 +38,10 @@ const resources = [
     component: RoleCreate
   },
   {
+    name: 'role-edit/:roleID',
+    component: RoleEdit
+  },
+  {
     name: 'group-list',
     component: GroupList
   },
@@ -40,12 +50,32 @@ const resources = [
     component: GroupCreate
   },
   {
+    name: 'group-edit/:groupID',
+    component: GroupEdit
+  },
+  {
     name: 'user-list',
     component: UserList
   },
   {
     name: 'user-create',
     component: UserCreate
+  },
+  {
+    name: 'user-edit/:userID',
+    component: UserEdit
+  },
+  {
+    name: 'permission-list',
+    component: PermissionList
+  },
+  {
+    name: 'permission-create',
+    component: PermissionCreate
+  },
+  {
+    name: 'permission-edit/:perID',
+    component: PermissionEdit
   }
 ];
 

@@ -19,6 +19,14 @@ const tabs = [
   {
     id: '4',
     label: 'token'
+  },
+  {
+    id: '5',
+    label: 'usersInRealm'
+  },
+  {
+    id: '6',
+    label: 'groupsInRealm'
   }
 ];
 

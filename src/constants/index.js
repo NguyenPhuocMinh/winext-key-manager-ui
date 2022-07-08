@@ -10,7 +10,12 @@ const constants = {
     METHOD_NOT_ALLOW: 405,
     DUPLICATE: 409,
     INTERNAL_SERVER: 500
-  }
+  },
+  SORT_DEFAULT: 'createdAt',
+  SORT_ORDER: 'desc',
+  KEY_SIZE_DEFAULT: '2048',
+  ALGORITHM_DEFAULT: 'RS256',
+  USE_FOR_DEFAULT: 'SIGN'
 };
 
 export default constants;

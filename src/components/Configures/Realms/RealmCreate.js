@@ -16,7 +16,8 @@ import {
   CardActions,
   Button,
   Divider,
-  CircularProgress
+  CircularProgress,
+  Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { createRealmAction } from '@customActions/index';
@@ -92,7 +93,13 @@ const RealmCreateForm = (formProps, options = {}) => {
             sx={{
               background: (theme) => theme.palette.primary.main
             }}
-            subheader={translate('resources.configures.realms.create.title')}
+            subheader={
+              <Box display="flex" alignItems="center">
+                <Typography variant="body2" fontWeight={600}>
+                  {translate('resources.configures.realms.title.create')}
+                </Typography>
+              </Box>
+            }
           />
           <Divider sx={{ width: '100%' }} />
           <CardContent>
@@ -104,7 +111,7 @@ const RealmCreateForm = (formProps, options = {}) => {
               }}
             >
               <TextInputBootStrap
-                label="resources.configures.realms.create.fields.name"
+                label="resources.configures.realms.fields.name"
                 required
                 id="name"
                 source="name"
@@ -121,7 +128,7 @@ const RealmCreateForm = (formProps, options = {}) => {
               <SwitchInputBootStrap
                 id="activated"
                 source="activated"
-                label="resources.configures.realms.create.fields.activated"
+                label="resources.configures.realms.fields.activated"
                 {...formProps}
               />
             </Box>
@@ -149,7 +156,7 @@ const RealmCreateForm = (formProps, options = {}) => {
                   thickness={2}
                 />
               )}
-              {translate('resources.configures.realms.create.button_save')}
+              {translate('common.button.save')}
             </Button>
             <Button
               sx={{
@@ -164,7 +171,7 @@ const RealmCreateForm = (formProps, options = {}) => {
               variant="outlined"
               onClick={handleCancel}
             >
-              {translate('resources.configures.realms.create.button_cancel')}
+              {translate('common.button.cancel')}
             </Button>
           </CardActions>
         </Card>

@@ -13,44 +13,10 @@ const configureRoutes = [
     pathName: '/realm-list',
     routerName: 'routes.configure.child.realm.label',
     leftIcon: 'Waves'
-  },
-  {
-    parent: {
-      pathName: '/configures',
-      routerName: 'routes.configure.label'
-    },
-    pathName: '/realm-create',
-    routerName: 'routes.configure.child.realm.label',
-    leftIcon: 'Waves'
-  },
-  {
-    parent: {
-      pathName: '/configures',
-      routerName: 'routes.configure.label'
-    },
-    pathName: '/realm-edit/:id',
-    routerName: 'routes.configure.child.realm.label',
-    leftIcon: 'Waves'
-  },
-  {
-    parent: {
-      pathName: '/configures',
-      routerName: 'routes.configure.label'
-    },
-    pathName: '/role-list',
-    routerName: 'routes.configure.child.role.label',
-    leftIcon: 'PlaylistRemove'
   }
 ];
 
-const routes = [
-  {
-    parent: null,
-    pathName: '/',
-    routerName: 'routes.dashBoard.label',
-    leftIcon: 'Dashboard'
-  },
-  ...configureRoutes,
+const manageRoutes = [
   {
     parent: null,
     pathName: '/manages',
@@ -80,10 +46,39 @@ const routes = [
       pathName: '/manages',
       routerName: 'routes.manage.label'
     },
+    pathName: '/role-list',
+    routerName: 'routes.manage.child.role.label',
+    leftIcon: 'PlaylistRemove'
+  },
+  {
+    parent: {
+      pathName: '/manages',
+      routerName: 'routes.manage.label'
+    },
+    pathName: '/permission-list',
+    routerName: 'routes.manage.child.permission.label',
+    leftIcon: 'SyncLock'
+  },
+  {
+    parent: {
+      pathName: '/manages',
+      routerName: 'routes.manage.label'
+    },
     pathName: '/sessions',
     routerName: 'routes.manage.child.session.label',
     leftIcon: 'ManageHistory'
   }
+];
+
+const routes = [
+  {
+    parent: null,
+    pathName: '/',
+    routerName: 'routes.dashBoard.label',
+    leftIcon: 'Dashboard'
+  },
+  ...configureRoutes,
+  ...manageRoutes
 ];
 
 export default routes;
